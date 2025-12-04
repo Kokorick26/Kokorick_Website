@@ -34,15 +34,6 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   return <span ref={ref} className="tabular-nums">0{suffix}</span>;
 }
 
-const clients = [
-  { name: "TechCorp", logo: "https://via.placeholder.com/120x40/1e293b/2563eb?text=TechCorp" },
-  { name: "DataFlow", logo: "https://via.placeholder.com/120x40/1e293b/2563eb?text=DataFlow" },
-  { name: "AI Systems", logo: "https://via.placeholder.com/120x40/1e293b/2563eb?text=AI+Systems" },
-  { name: "CloudScale", logo: "https://via.placeholder.com/120x40/1e293b/2563eb?text=CloudScale" },
-  { name: "InnovateLabs", logo: "https://via.placeholder.com/120x40/1e293b/2563eb?text=InnovateLabs" },
-  { name: "FutureTech", logo: "https://via.placeholder.com/120x40/1e293b/2563eb?text=FutureTech" },
-];
-
 const testimonials = [
   {
     quote: "Kokorick transformed our AI pipeline from prototype to production in weeks, not months. Their attention to detail and system reliability is unmatched.",
@@ -93,37 +84,6 @@ export function ImpactSection() {
             </motion.div>
           ))}
         </div>
-
-        {/* Client Logos */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-20"
-        >
-          <h3 className="text-2xl text-white text-center mb-10">Trusted by Industry Leaders</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {clients.map((client, index) => (
-              <motion.div
-                key={client.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="flex items-center justify-center"
-              >
-                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
-                  <img
-                    src={client.logo}
-                    alt={client.name}
-                    className="h-8 w-auto opacity-60 hover:opacity-100 transition-opacity"
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
         {/* Testimonials */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

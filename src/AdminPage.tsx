@@ -10,11 +10,25 @@ import {
   CheckCircle2,
   ArrowUpRight,
   Search,
-  MoreHorizontal,
   Trash2,
-  Copy
+  Copy,
+  MessageSquareQuote,
+  FolderKanban,
+  FileText,
+  BookOpen,
+  Mail,
+  Users,
+  BarChart3
 } from "lucide-react";
 import logo from "./assets/logo.png";
+import TestimonialsManager from "./components/admin/TestimonialsManager";
+import ProjectsManager from "./components/admin/ProjectsManager";
+import BlogsManager from "./components/admin/BlogsManager";
+import WhitepapersManager from "./components/admin/WhitepapersManager";
+import NewsletterManager from "./components/admin/NewsletterManager";
+import TeamManager from "./components/admin/TeamManager";
+import AnalyticsDashboard, { Visit, BlogPost } from "./components/admin/AnalyticsDashboard";
+import { StatusDropdown } from "./components/admin/StatusDropdown";
 
 // Types
 interface ContactRequest {
@@ -24,7 +38,7 @@ interface ContactRequest {
   phone?: string;
   company?: string;
   service: string;
-  budget?: string;
+
   message: string;
   status: "new" | "in-progress" | "completed";
   timestamp: string;
@@ -65,6 +79,26 @@ async function deleteRequestApi(id: string): Promise<void> {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` }
   });
+}
+
+async function fetchVisits(): Promise<Visit[]> {
+  const token = localStorage.getItem("adminToken");
+  const res = await fetch(`${API_BASE}/analytics/visits`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error("Failed to fetch visits");
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
+async function fetchBlogs(): Promise<BlogPost[]> {
+  const token = localStorage.getItem("adminToken");
+  const res = await fetch(`${API_BASE}/blogs`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error("Failed to fetch blogs");
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
 }
 
 async function loginApi(username: string, password: string): Promise<{ token: string; user: User }> {
@@ -114,8 +148,8 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
 
       <div className="w-full max-w-md relative z-10 bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 p-8 rounded-2xl shadow-2xl">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-white rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg shadow-white/20">
-            <div className="w-6 h-6 bg-black rounded-md" />
+          <div className="flex justify-center mb-8">
+            <img src={logo} alt="Kokorick" className="h-16 w-auto object-contain" />
           </div>
           <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
           <p className="text-zinc-400 mt-2">Sign in to access the admin dashboard</p>
@@ -170,10 +204,13 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [currentPage, setCurrentPage] = useState<"dashboard" | "requests">("dashboard");
+  const [currentPage, setCurrentPage] = useState<"dashboard" | "requests" | "testimonials" | "team" | "projects" | "blogs" | "whitepapers" | "newsletter" | "analytics">("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [requests, setRequests] = useState<ContactRequest[]>([]);
+  const [visits, setVisits] = useState<Visit[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [analyticsLoading, setAnalyticsLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedRequest, setSelectedRequest] = useState<ContactRequest | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -194,6 +231,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (isAuthenticated) {
       loadRequests();
+      loadAnalyticsData();
     }
   }, [isAuthenticated]);
 
@@ -206,6 +244,22 @@ export default function AdminPage() {
       console.error("Failed to load requests:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadAnalyticsData = async () => {
+    setAnalyticsLoading(true);
+    try {
+      const [visitsData, blogsData] = await Promise.all([
+        fetchVisits().catch(() => []),
+        fetchBlogs().catch(() => []),
+      ]);
+      setVisits(visitsData);
+      setBlogs(blogsData);
+    } catch (err) {
+      console.error("Failed to load analytics data:", err);
+    } finally {
+      setAnalyticsLoading(false);
     }
   };
 
@@ -273,7 +327,14 @@ export default function AdminPage() {
 
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "requests", label: "Requests", icon: Inbox }
+    { id: "analytics", label: "Analytics", icon: BarChart3 },
+    { id: "requests", label: "Requests", icon: Inbox },
+    { id: "testimonials", label: "Testimonials", icon: MessageSquareQuote },
+    { id: "team", label: "Team", icon: Users },
+    { id: "projects", label: "Projects", icon: FolderKanban },
+    { id: "blogs", label: "Blog Posts", icon: FileText },
+    { id: "whitepapers", label: "Whitepapers", icon: BookOpen },
+    { id: "newsletter", label: "Newsletter", icon: Mail }
   ];
 
   return (
@@ -290,11 +351,11 @@ export default function AdminPage() {
           <span className="font-bold text-lg text-white">Kokorick</span>
         </div>
 
-        <nav className="p-4 space-y-2">
+        <nav className="p-4 space-y-2 flex-1 overflow-y-auto overscroll-contain">
           {navItems.map(item => (
             <button
               key={item.id}
-              onClick={() => { setCurrentPage(item.id as "dashboard" | "requests"); setSidebarOpen(false); }}
+              onClick={() => { setCurrentPage(item.id as "dashboard" | "requests" | "testimonials" | "projects" | "blogs" | "whitepapers"); setSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${currentPage === item.id
                 ? "bg-white text-black shadow-lg shadow-white/10"
                 : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
@@ -306,9 +367,9 @@ export default function AdminPage() {
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-800">
+        <div className="p-4 border-t border-zinc-800 shrink-0">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white">
+            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-xs font-bold text-black">
               {user?.username?.substring(0, 2).toUpperCase() || "AD"}
             </div>
             <div>
@@ -344,10 +405,10 @@ export default function AdminPage() {
               {/* Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                  { label: "Total Requests", value: stats.total, icon: Inbox, color: "text-white", bg: "bg-blue-600", border: "border-zinc-800" },
-                  { label: "Pending", value: stats.pending, icon: AlertCircle, color: "text-white", bg: "bg-yellow-600", border: "border-zinc-800" },
-                  { label: "In Progress", value: stats.inProgress, icon: Clock, color: "text-white", bg: "bg-blue-600", border: "border-zinc-800" },
-                  { label: "Completed", value: stats.completed, icon: CheckCircle2, color: "text-white", bg: "bg-green-600", border: "border-zinc-800" }
+                  { label: "Total Requests", value: stats.total, icon: Inbox, color: "text-black", bg: "bg-white", border: "border-zinc-800" },
+                  { label: "Pending", value: stats.pending, icon: AlertCircle, color: "text-black", bg: "bg-white", border: "border-zinc-800" },
+                  { label: "In Progress", value: stats.inProgress, icon: Clock, color: "text-black", bg: "bg-white", border: "border-zinc-800" },
+                  { label: "Completed", value: stats.completed, icon: CheckCircle2, color: "text-black", bg: "bg-white", border: "border-zinc-800" }
                 ].map((stat, i) => (
                   <div key={i} className={`bg-zinc-900 border border-zinc-800 rounded-2xl p-6 hover:border-zinc-700 transition-all duration-300 group shadow-sm`}>
                     <div className="flex items-center justify-between">
@@ -426,7 +487,7 @@ export default function AdminPage() {
                 </div>
               </div>
             </div>
-          ) : (
+          ) : currentPage === "requests" ? (
             /* REQUESTS PAGE */
             <div className="space-y-6 animate-fade-in-up">
 
@@ -459,9 +520,9 @@ export default function AdminPage() {
               {/* Table */}
               <div className="bg-zinc-900 border border-zinc-800 rounded-2xl  shadow-sm">
                 <div className="overflow-x-auto">
-                  <table className="w-full border table-fixed">
+                  <table className="w-full table-fixed">
                     <thead>
-                      <tr className="border-b border-zinc-50 bg-zinc-900">
+                      <tr className="border-b border-zinc-800 bg-zinc-900">
                         <th className="text-center text-sm font-bold text-zinc-400 px-6 py-6 w-[15%]">Date</th>
                         <th className="text-center text-sm font-bold text-zinc-400 px-6 py-6 w-[40%]">Client</th>
                         <th className="text-center text-sm font-bold text-zinc-400 px-6 py-6 w-[15%]">Service</th>
@@ -520,21 +581,10 @@ export default function AdminPage() {
                               </span>
                             </td>
                             <td className="px-6 py-8 text-center" onClick={e => e.stopPropagation()}>
-                              <div className="relative inline-block group">
-                                <button className="p-2.5 text-zinc-400 group-hover:text-white group-hover:bg-zinc-800 rounded-xl transition-colors pointer-events-none">
-                                  <MoreHorizontal className="w-5 h-5" />
-                                </button>
-                                <select
-                                  value={request.status}
-                                  onChange={(e) => handleUpdateStatus(request.id, e.target.value)}
-                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none bg-transparent border-none text-transparent"
-                                  title="Change status"
-                                >
-                                  <option value="new">Mark as Pending</option>
-                                  <option value="in-progress">Mark as In Progress</option>
-                                  <option value="completed">Mark as Completed</option>
-                                </select>
-                              </div>
+                              <StatusDropdown
+                                value={request.status}
+                                onChange={(status) => handleUpdateStatus(request.id, status)}
+                              />
                             </td>
                           </tr>
                         ))
@@ -551,7 +601,26 @@ export default function AdminPage() {
                 </div>
               </div>
             </div>
-          )}
+          ) : currentPage === "analytics" ? (
+            <AnalyticsDashboard
+              visits={visits}
+              requests={requests}
+              blogs={blogs}
+              loading={analyticsLoading}
+            />
+          ) : currentPage === "testimonials" ? (
+            <TestimonialsManager />
+          ) : currentPage === "team" ? (
+            <TeamManager />
+          ) : currentPage === "projects" ? (
+            <ProjectsManager />
+          ) : currentPage === "blogs" ? (
+            <BlogsManager />
+          ) : currentPage === "whitepapers" ? (
+            <WhitepapersManager />
+          ) : currentPage === "newsletter" ? (
+            <NewsletterManager />
+          ) : null}
         </main>
       </div>
 
@@ -649,10 +718,7 @@ export default function AdminPage() {
                     <p className="text-xs text-zinc-500 mb-2 uppercase tracking-wider font-semibold group-hover:text-zinc-400 transition-colors">Phone</p>
                     <p className="font-semibold text-sm truncate text-white group-hover:text-blue-300 transition-colors">{selectedRequest.phone || "N/A"}</p>
                   </div>
-                  <div className="bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 p-4 rounded-xl border border-zinc-800/60 hover:border-zinc-700/60 transition-colors min-w-0 group">
-                    <p className="text-xs text-zinc-500 mb-2 uppercase tracking-wider font-semibold group-hover:text-zinc-400 transition-colors">Budget</p>
-                    <p className="font-semibold text-sm capitalize truncate text-white group-hover:text-blue-300 transition-colors">{selectedRequest.budget || "N/A"}</p>
-                  </div>
+
                 </div>
 
                 <div className="w-full min-w-0">

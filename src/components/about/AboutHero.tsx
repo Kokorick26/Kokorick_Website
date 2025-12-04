@@ -35,7 +35,7 @@ export function AboutHero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-64 sm:pt-80 pb-20 sm:pb-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 pb-20 sm:pb-32">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,9 +57,9 @@ export function AboutHero() {
           className="mb-8 sm:mb-12 text-center"
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 sm:mb-8 text-white/90 leading-tight font-medium">
-            Engineering intelligence that moves
-            <span className="block mt-3 bg-gradient-to-r from-blue-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-              research into real-world impact
+            Transforming innovation into
+            <span className="block mt-3 text-blue-400 font-bold drop-shadow-sm">
+              solutions that shape tomorrow
             </span>
           </h1>
         </motion.div>
@@ -71,7 +71,7 @@ export function AboutHero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          We partner with founders and enterprises to design, optimize, and ship production-ready AI systems — from prototype to reliable, measurable outcomes.
+          We collaborate with founders and enterprises to engineer, refine, and deliver AI systems that go from prototype to production—ensuring every solution is built for reliability and real impact.
         </motion.p>
 
         {/* CTA Buttons */}

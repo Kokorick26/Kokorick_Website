@@ -8,7 +8,7 @@ interface ContactRequest {
   phone: string;
   company: string;
   service: string;
-  budget: string;
+
   message: string;
   timestamp: string;
   status: "new" | "in-progress" | "completed" | "rejected";
@@ -46,7 +46,7 @@ export function updateRequest(id: string, updates: Partial<ContactRequest>): Con
   const requests = getRequests();
   const index = requests.findIndex((r) => r.id === id);
   if (index === -1) return null;
-  
+
   requests[index] = { ...requests[index], ...updates };
   saveRequests(requests);
   return requests[index];
@@ -57,7 +57,7 @@ export function deleteRequest(id: string): boolean {
   const requests = getRequests();
   const filtered = requests.filter((r) => r.id !== id);
   if (filtered.length === requests.length) return false;
-  
+
   saveRequests(filtered);
   return true;
 }

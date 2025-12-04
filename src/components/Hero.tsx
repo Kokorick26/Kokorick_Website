@@ -4,54 +4,30 @@ import { cn } from "./ui/utils";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-x-hidden overflow-y-visible bg-black">
       {/* Shader Animation Background */}
       <div className="absolute inset-0 opacity-50">
         <ShaderAnimation />
       </div>
 
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80 z-[1]" />
+      {/* Gradient fade to black at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black via-black/80 to-transparent z-[5]" />
 
-      {/* Floating particles effect */}
-      <div className="absolute inset-0 z-[2]">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-500/30 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.3, 0.8, 0.3],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
-
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 pb-20 sm:pb-32 text-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-32 text-center">
         <motion.div
-          className="mb-16"
+          className="mb-20"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <div className="text-3xl md:text-5xl lg:text-6xl mb-6 text-white/90 font-light">
+          <div className="text-3xl md:text-5xl lg:text-6xl mb-4 text-white/90">
             Bridging the gap between
           </div>
-          <div className="text-4xl md:text-6xl lg:text-7xl mb-6">
+          <div className="text-4xl md:text-6xl lg:text-7xl mb-12">
             <span
               className={cn(
-                'relative inline-block text-transparent font-medium',
+                'relative inline-block text-transparent',
                 'before:absolute before:inset-0 before:animate-[onloadopacity_1s_ease-out_forwards] before:opacity-0 before:content-[attr(data-text)]',
                 'before:bg-[linear-gradient(0deg,#dfe5ee_0%,#fffaf6_50%)] before:bg-clip-text before:text-transparent',
                 '[filter:url(#glow-4)]',
@@ -61,19 +37,19 @@ export function Hero() {
               AI Research & Real-World Impact
             </span>
           </div>
-          <div className="text-3xl md:text-5xl lg:text-6xl text-white/90 font-light">
+          <div className="text-3xl md:text-5xl lg:text-6xl text-white/90">
             for intelligent systems.
           </div>
         </motion.div>
 
         <motion.p
-          className="max-w-3xl mx-auto mb-12 bg-gradient-to-t from-[#86868b] to-[#bdc2c9] bg-clip-text text-transparent text-lg md:text-xl leading-relaxed"
+          className="max-w-3xl mx-auto mb-12 bg-gradient-to-t from-[#86868b] to-[#bdc2c9] bg-clip-text text-transparent text-lg md:text-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           We're an AI-driven software engineering studio building systems that don't just run — they{' '}
-          <span className="relative inline-block text-[#e7dfd6] font-medium">
+          <span className="relative inline-block text-[#e7dfd6]">
             reason.
           </span>{' '}
           At Kokorick, we turn deep tech research into scalable, production-grade solutions — from agentic AI platforms to full-stack enterprise systems.
@@ -86,14 +62,14 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.8 }}
         >
           <motion.button
-            className="px-10 py-4 rounded-full bg-white text-black font-medium hover:bg-white/90 transition-colors shadow-lg"
+            className="px-10 py-3.5 rounded-full bg-white text-black hover:bg-white/90 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Talk to Our Team
           </motion.button>
           <motion.button
-            className="px-10 py-4 rounded-full bg-transparent border border-white/20 text-white font-medium hover:bg-white/5 transition-colors backdrop-blur-sm"
+            className="px-10 py-3.5 rounded-full bg-transparent border border-white/20 text-white hover:bg-white/5 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -125,7 +101,7 @@ export function Hero() {
             />
             <feGaussianBlur
               in="SourceGraphic"
-              stdDeviation="19"
+              stdDeviation="10"
               result="blur19"
             />
             <feGaussianBlur
@@ -135,7 +111,7 @@ export function Hero() {
             />
             <feGaussianBlur
               in="SourceGraphic"
-              stdDeviation="30"
+              stdDeviation="15"
               result="blur30"
             />
             <feColorMatrix
@@ -211,7 +187,7 @@ export function Hero() {
               in="color-4-blur"
               result="layer-4-offsetted"
               dx="0"
-              dy="16"
+              dy="8"
             />
             <feColorMatrix
               in="blur30"
@@ -226,7 +202,7 @@ export function Hero() {
               in="color-5-blur"
               result="layer-5-offsetted"
               dx="0"
-              dy="64"
+              dy="16"
             />
             <feColorMatrix
               in="blur30"
@@ -241,7 +217,7 @@ export function Hero() {
               in="color-6-blur"
               result="layer-6-offsetted"
               dx="0"
-              dy="64"
+              dy="16"
             />
             <feColorMatrix
               in="blur30"
@@ -256,7 +232,7 @@ export function Hero() {
               in="color-7-blur"
               result="layer-7-offsetted"
               dx="0"
-              dy="64"
+              dy="16"
             />
             <feMerge>
               <feMergeNode in="layer-0-offsetted" />

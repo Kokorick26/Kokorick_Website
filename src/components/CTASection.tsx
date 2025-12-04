@@ -113,7 +113,7 @@ export function CTASection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Left Content */}
           <div className="space-y-8 max-w-xl">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl leading-tight tracking-tight text-white animate-fade-in-up [animation-delay:200ms]">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight tracking-tight text-white animate-fade-in-up [animation-delay:200ms]">
               Ready to Build Intelligent Systems?
             </h1>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed animate-fade-in-up [animation-delay:400ms]">
@@ -138,7 +138,7 @@ export function CTASection() {
                 {marqueeItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight py-6 sm:py-8 marquee-item"
+                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl tracking-tight py-6 sm:py-8 marquee-item"
                   >
                     {item}
                   </div>

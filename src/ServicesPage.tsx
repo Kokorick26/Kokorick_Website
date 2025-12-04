@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Footer } from "./components/Footer";
+import { ContainerScroll, CardSticky } from "./components/ui/card-sticky";
 import {
   Brain,
   Code2,
@@ -41,7 +42,7 @@ function ServicesHero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 z-[1]" />
       <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black via-black/80 to-transparent z-[5]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-64 sm:pt-80 pb-20 sm:pb-32 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 pb-20 sm:pb-32 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -61,7 +62,7 @@ function ServicesHero() {
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 text-white/90 leading-tight font-medium"
         >
           Build AI systems that
-          <span className="block mt-3 bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
+          <span className="block mt-3 text-blue-400 font-bold drop-shadow-sm">
             actually work in production
           </span>
         </motion.h1>
@@ -83,75 +84,115 @@ export default function ServicesPage() {
   const services = [
     {
       icon: Brain,
-      title: "AI Research & Development",
-      description: "Custom AI models, fine-tuning, and research implementation tailored to your domain.",
+      title: "AI Strategy & Consultancy",
+      description: "We help startups, SMEs, enterprise teams, and even non-technical clients understand what AI can truly do for their businesses. From demystifying AI capabilities to crafting a tailored roadmap, our consultancy guides you every step of the way—transforming possibilities into clear, actionable plans that drive growth and innovation.",
       features: [
-        "Custom model development",
-        "LLM fine-tuning & optimization",
-        "Research paper implementation",
-        "Algorithm design & prototyping"
+        "Tailored AI roadmaps",
+        "Capability assessment",
+        "Growth strategy planning",
+        "Non-technical guidance"
       ],
-      color: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: Code2,
-      title: "Full-Stack AI Engineering",
-      description: "End-to-end development of AI-powered applications with modern tech stacks.",
-      features: [
-        "React/Next.js frontends",
-        "Python/Node.js backends",
-        "API design & integration",
-        "Database architecture"
-      ],
-      color: "from-purple-500 to-pink-500"
+      color: "from-blue-500 to-cyan-500",
+      hoverColor: "from-blue-600 to-cyan-600",
+      shadowColor: "shadow-blue-500/20"
     },
     {
       icon: Rocket,
-      title: "Agentic AI Systems",
-      description: "Build autonomous agents that reason, plan, and execute complex workflows.",
+      title: "AI Agents & Agentic Automation",
+      description: "Experience autonomous AI systems that think, plan, and act like real employees, working tirelessly to boost your business operations. Clients gain AI-powered customer support agents, lead qualification and follow-up agents, workflow automations, research and reporting bots, and streamlined business process automation.",
       features: [
-        "Multi-agent orchestration",
-        "Tool integration & function calling",
-        "Memory & context management",
-        "Workflow automation"
+        "24/7 AI employees",
+        "Customer support agents",
+        "Lead qualification bots",
+        "Research & reporting"
       ],
-      color: "from-orange-500 to-red-500"
+      color: "from-orange-500 to-red-500",
+      hoverColor: "from-orange-600 to-red-600",
+      shadowColor: "shadow-orange-500/20"
     },
     {
-      icon: Database,
-      title: "RAG & Knowledge Systems",
-      description: "Retrieval-augmented generation systems for enterprise knowledge bases.",
+      icon: Code2,
+      title: "Custom LLM Development",
+      description: "Get tailor-made large language models built specifically for your business needs. From custom chatbots and knowledge-base-trained models to internal task assistants, document analysis, summarisation, and automated email-writing tools. Our solutions deliver AI uniquely trained on your own data.",
       features: [
-        "Vector database setup",
-        "Semantic search optimization",
-        "Document processing pipelines",
-        "Context-aware retrieval"
+        "Custom chatbots",
+        "Knowledge-base models",
+        "Document analysis",
+        "Automated writing tools"
       ],
-      color: "from-green-500 to-emerald-500"
+      color: "from-purple-500 to-pink-500",
+      hoverColor: "from-purple-600 to-pink-600",
+      shadowColor: "shadow-purple-500/20"
     },
     {
-      icon: Shield,
-      title: "AI Safety & Evaluation",
-      description: "Ensure your AI systems are reliable, safe, and production-ready.",
+      icon: Zap,
+      title: "AI Workflow Automation",
+      description: "Transform slow, manual processes into fast, automated workflows that boost efficiency and reduce errors. Automate CRM updates, email campaigns, data extraction, report generation, and HR/recruitment tasks effortlessly. Unlock the future of productivity with automation designed to work smarter, faster, and 24/7.",
       features: [
-        "Model evaluation frameworks",
-        "Safety guardrails",
-        "Bias detection & mitigation",
-        "Performance monitoring"
+        "CRM automation",
+        "Data extraction",
+        "Report generation",
+        "HR & recruitment tasks"
       ],
-      color: "from-yellow-500 to-orange-500"
+      color: "from-green-500 to-emerald-500",
+      hoverColor: "from-green-600 to-emerald-600",
+      shadowColor: "shadow-green-500/20"
     },
     {
       icon: GitBranch,
-      title: "MLOps & Infrastructure",
-      description: "Deploy, monitor, and scale AI systems with modern DevOps practices.",
+      title: "AI Integration for Existing Systems",
+      description: "Seamlessly embed AI into the tools your business already relies on. From CRMs like HubSpot, Salesforce, and Zoho to ERPs, websites, internal dashboards, databases, and APIs. This smooth integration boosts efficiency, automates workflows, and delivers smarter insights without disrupting your current operations.",
       features: [
-        "CI/CD pipelines",
-        "Model versioning & tracking",
-        "Cloud deployment (AWS/GCP/Azure)",
-        "Performance optimization"
+        "CRM & ERP integration",
+        "Dashboard enhancement",
+        "API connectivity",
+        "Seamless embedding"
       ],
-      color: "from-indigo-500 to-purple-500"
+      color: "from-indigo-500 to-purple-500",
+      hoverColor: "from-indigo-600 to-purple-600",
+      shadowColor: "shadow-indigo-500/20"
+    },
+    {
+      icon: Shield,
+      title: "Computer Vision Solutions",
+      description: "Harness AI that sees, detects, tracks, and analyses images and videos with precision. Applications include object detection, inventory tracking, security and surveillance, quality control automation, and facial recognition. Our service stands out as very few UK agencies offer specialised Computer Vision solutions.",
+      features: [
+        "Object detection",
+        "Inventory tracking",
+        "Quality control",
+        "Facial recognition"
+      ],
+      color: "from-yellow-500 to-orange-500",
+      hoverColor: "from-yellow-600 to-orange-600",
+      shadowColor: "shadow-yellow-500/20"
+    },
+    {
+      icon: Sparkles,
+      title: "Deep Learning Model Development",
+      description: "Build advanced neural networks tailored to solve your business’s most complex challenges. Our deep learning solutions excel in prediction models, recommendation systems, forecasting, pattern recognition, and behaviour analysis. Harness the power of deep learning to gain accurate forecasts and actionable insights.",
+      features: [
+        "Prediction models",
+        "Recommendation systems",
+        "Pattern recognition",
+        "Behavior analysis"
+      ],
+      color: "from-rose-500 to-red-500",
+      hoverColor: "from-rose-600 to-red-600",
+      shadowColor: "shadow-rose-500/20"
+    },
+    {
+      icon: Database,
+      title: "Data Engineering & Pipeline Setup",
+      description: "Build clean, organised, and automated data pipelines that power smarter AI. Our services include data cleaning, transformation, API-based ingestion, database setup, and rigorous data quality assurance. Efficient pipelines ensure your AI models train on reliable, high-quality data.",
+      features: [
+        "Data cleaning & transformation",
+        "API ingestion",
+        "Database setup",
+        "Quality assurance"
+      ],
+      color: "from-cyan-500 to-blue-500",
+      hoverColor: "from-cyan-600 to-blue-600",
+      shadowColor: "shadow-cyan-500/20"
     }
   ];
 
@@ -159,51 +200,62 @@ export default function ServicesPage() {
     <>
       <ServicesHero />
 
-      {/* Services Grid */}
+      {/* Services Sticky Cards */}
       <section className="bg-black py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-4 font-medium">
-                Comprehensive AI Solutions
-              </h2>
-              <p className="text-white/60 text-lg max-w-2xl mx-auto">
-                Everything you need to build, deploy, and scale intelligent systems
-              </p>
-            </div>
-          </AnimatedSection>
+        <AnimatedSection>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-4 font-medium">
+              Comprehensive AI Solutions
+            </h2>
+            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+              Everything you need to build, deploy, and scale intelligent systems
+            </p>
+          </div>
+        </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, i) => (
+        <ContainerScroll className="py-20">
+          {services.map((service, i) => (
+            <CardSticky
+              key={i}
+              index={i}
+              incrementY={30}
+              incrementZ={10}
+              offsetTop="15vh"
+              className="mb-6 flex justify-center"
+            >
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="group"
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="group w-full"
               >
-                <div className="h-full p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/8 transition-all duration-300">
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6`}>
-                    <service.icon className="w-7 h-7 text-white" />
+                <div className="relative p-6 md:p-8 rounded-3xl bg-[#0d1220] border border-white/10 transition-all duration-300 overflow-hidden">
+                  {/* Content */}
+
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center mb-4 border border-blue-500/30">
+                      <service.icon className="w-6 h-6 text-blue-400" />
+                    </div>
+
+                    <h3 className="text-2xl text-white font-bold mb-3">{service.title}</h3>
+                    <p className="text-white/90 mb-6 leading-relaxed text-base">{service.description}</p>
+
+                    <ul className="space-y-3">
+                      {service.features.map((feature, j) => (
+                        <li key={j} className="flex items-start gap-3 text-white/80">
+                          <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-
-                  <h3 className="text-2xl text-white font-medium mb-3">{service.title}</h3>
-                  <p className="text-white/70 mb-6 leading-relaxed">{service.description}</p>
-
-                  <ul className="space-y-3">
-                    {service.features.map((feature, j) => (
-                      <li key={j} className="flex items-start gap-2 text-white/60">
-                        <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
+            </CardSticky>
+          ))}
+        </ContainerScroll>
       </section>
 
       {/* Process Section */}

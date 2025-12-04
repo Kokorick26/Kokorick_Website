@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import Lenis from 'lenis';
+import { Toaster } from 'sonner';
+import AnalyticsTracker from "./components/AnalyticsTracker";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { StatsSection } from "./components/StatsSection";
 import { SubHeader } from "./components/SubHeader";
 import { ServicesSection } from "./components/ServicesSection";
 import { ProjectsSection } from "./components/ProjectsSection";
+import { Testimonials } from "./components/Testimonials";
 import { CTASection } from "./components/CTASection";
 import { Footer } from "./components/Footer";
 import AboutPage from "./AboutPage";
@@ -15,6 +19,9 @@ import ServicesPage from "./ServicesPage";
 import ProjectsPage from "./ProjectsPage";
 import GetStartedPage from "./GetStartedPage";
 import AdminPage from "./AdminPage";
+import ProjectDetailsPage from "./ProjectDetailsPage";
+import BlogPage from "./BlogPage";
+import BlogDetailPage from "./BlogDetailPage";
 
 // Reusable animated section wrapper
 function AnimatedSection({
@@ -43,7 +50,7 @@ function AnimatedSection({
   );
 }
 
-function HomePage() {
+function HomePage({ onProjectClick }: { onProjectClick?: (project: any) => void }) {
   return (
     <>
       {/* Hero - no wrapper needed, already animated */}
@@ -66,7 +73,12 @@ function HomePage() {
 
       {/* Projects Section */}
       <AnimatedSection>
-        <ProjectsSection />
+        <ProjectsSection onProjectClick={onProjectClick} />
+      </AnimatedSection>
+
+      {/* Testimonials Section */}
+      <AnimatedSection>
+        <Testimonials />
       </AnimatedSection>
 
       {/* CTA Section */}
@@ -83,7 +95,7 @@ function HomePage() {
 }
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<"home" | "about" | "services" | "projects" | "get-started" | "admin">(() => {
+  const [currentPage, setCurrentPage] = useState<"home" | "about" | "services" | "projects" | "get-started" | "admin" | "project-details" | "blog" | "blog-detail">(() => {
     // Check URL pathname on initial load
     const path = window.location.pathname;
     if (path === "/login" || path === "/admin") return "admin";
@@ -91,8 +103,38 @@ export default function App() {
     if (path === "/about") return "about";
     if (path === "/services") return "services";
     if (path === "/projects") return "projects";
+    if (path === "/blog") return "blog";
+    if (path.startsWith("/blog/")) return "blog-detail";
     return "home";
   });
+
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(() => {
+    const path = window.location.pathname;
+    if (path.startsWith("/blog/")) {
+      return path.replace("/blog/", "");
+    }
+    return null;
+  });
+
+  // Initialize Lenis for smooth scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   // Listen for popstate (back/forward navigation)
   useEffect(() => {
@@ -108,31 +150,72 @@ export default function App() {
         setCurrentPage("services");
       } else if (path === "/projects") {
         setCurrentPage("projects");
+      } else if (path === "/blog") {
+        setCurrentPage("blog");
+      } else if (path.startsWith("/blog/")) {
+        setSelectedBlogSlug(path.replace("/blog/", ""));
+        setCurrentPage("blog-detail");
       } else {
         setCurrentPage("home");
       }
     };
-    
+
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
+  const handleProjectClick = (project: any) => {
+    setSelectedProjectId(project.id);
+    setCurrentPage("project-details");
+    window.scrollTo(0, 0);
+  };
+
+  const handleBlogClick = (slug: string) => {
+    setSelectedBlogSlug(slug);
+    setCurrentPage("blog-detail");
+    window.history.pushState({}, "", `/blog/${slug}`);
+    window.scrollTo(0, 0);
+  };
+
+  const handleBackToBlog = () => {
+    setCurrentPage("blog");
+    window.history.pushState({}, "", "/blog");
+    window.scrollTo(0, 0);
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case "home":
-        return <HomePage />;
+        return <HomePage onProjectClick={handleProjectClick} />;
       case "about":
         return <AboutPage />;
       case "services":
         return <ServicesPage />;
       case "projects":
-        return <ProjectsPage />;
+        return <ProjectsPage onProjectClick={handleProjectClick} />;
       case "get-started":
         return <GetStartedPage />;
       case "admin":
         return <AdminPage />;
+      case "project-details":
+        return (
+          <ProjectDetailsPage
+            projectId={selectedProjectId!}
+            onBack={() => setCurrentPage("projects")}
+          />
+        );
+      case "blog":
+        return <BlogPage onBlogClick={handleBlogClick} />;
+      case "blog-detail":
+        return (
+          <BlogDetailPage
+            slug={selectedBlogSlug!}
+            onBack={handleBackToBlog}
+            onBlogClick={handleBlogClick}
+          />
+        );
       default:
-        return <HomePage />;
+        return <HomePage onProjectClick={handleProjectClick} />;
     }
   };
 
@@ -141,11 +224,42 @@ export default function App() {
 
   // Admin page needs special handling - no wrapper constraints
   if (currentPage === "admin") {
-    return <AdminPage />;
+    return (
+      <>
+        <Toaster 
+          position="top-right" 
+          richColors 
+          closeButton
+          theme="dark"
+          toastOptions={{
+            style: {
+              background: '#18181b',
+              border: '1px solid #3f3f46',
+              color: '#fff',
+            },
+          }}
+        />
+        <AdminPage />
+      </>
+    );
   }
 
   return (
     <div className="w-full bg-black">
+      <Toaster 
+        position="top-right" 
+        richColors 
+        closeButton
+        theme="dark"
+        toastOptions={{
+          style: {
+            background: '#18181b',
+            border: '1px solid #3f3f46',
+            color: '#fff',
+          },
+        }}
+      />
+      {showNavbar && <AnalyticsTracker />}
       {showNavbar && <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />}
       {renderPage()}
     </div>

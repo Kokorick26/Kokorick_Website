@@ -1,5 +1,7 @@
-const AWS = require('aws-sdk');
-require('dotenv').config();
+import AWS from 'aws-sdk';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Configure AWS
 AWS.config.update({
@@ -30,7 +32,7 @@ const setup = async () => {
     await createTable({
         TableName: 'AdminUsers',
         KeySchema: [
-            { AttributeName: 'username', KeyType: 'HASH' }, // Partition key
+            { AttributeName: 'username', KeyType: 'HASH' },
         ],
         AttributeDefinitions: [
             { AttributeName: 'username', AttributeType: 'S' },
@@ -45,7 +47,67 @@ const setup = async () => {
     await createTable({
         TableName: 'ContactRequests',
         KeySchema: [
-            { AttributeName: 'id', KeyType: 'HASH' }, // Partition key
+            { AttributeName: 'id', KeyType: 'HASH' },
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'id', AttributeType: 'S' },
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5,
+        },
+    });
+
+    // 3. Testimonials Table
+    await createTable({
+        TableName: 'Testimonials',
+        KeySchema: [
+            { AttributeName: 'id', KeyType: 'HASH' },
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'id', AttributeType: 'S' },
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5,
+        },
+    });
+
+    // 4. Projects Table
+    await createTable({
+        TableName: 'Projects',
+        KeySchema: [
+            { AttributeName: 'id', KeyType: 'HASH' },
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'id', AttributeType: 'S' },
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5,
+        },
+    });
+
+    // 5. Whitepapers Table
+    await createTable({
+        TableName: 'Whitepapers',
+        KeySchema: [
+            { AttributeName: 'id', KeyType: 'HASH' },
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'id', AttributeType: 'S' },
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5,
+        },
+    });
+
+    // 6. Newsletter Subscribers Table
+    await createTable({
+        TableName: 'NewsletterSubscribers',
+        KeySchema: [
+            { AttributeName: 'id', KeyType: 'HASH' },
         ],
         AttributeDefinitions: [
             { AttributeName: 'id', AttributeType: 'S' },

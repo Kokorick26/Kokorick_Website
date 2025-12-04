@@ -1,14 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const dynamoDB = require('../db');
-const { v4: uuidv4 } = require('uuid');
-const auth = require('../middleware/auth');
+import express from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import dynamoDB from '../db.js';
+import auth from '../middleware/auth.js';
 
+const router = express.Router();
 const TABLE_NAME = 'ContactRequests';
 
 // Submit Contact Form
 router.post('/', async (req, res) => {
-    const { name, email, phone, company, service, budget, message, status, timestamp } = req.body;
+    const { name, email, phone, company, service, message, status, timestamp } = req.body;
 
     if (!name || !email || !phone || !message) {
         return res.status(400).json({ message: 'Please enter all required fields' });
@@ -21,7 +21,6 @@ router.post('/', async (req, res) => {
         phone,
         company: company || '',
         service,
-        budget: budget || '',
         message,
         status: status || 'new',
         timestamp: timestamp || new Date().toISOString(),
@@ -64,21 +63,31 @@ router.patch('/:id', auth, async (req, res) => {
     const { status } = req.body;
 
     try {
-        const params = {
+        // Get existing request
+        const getParams = {
             TableName: TABLE_NAME,
             Key: { id },
-            UpdateExpression: 'set #status = :status',
-            ExpressionAttributeNames: {
-                '#status': 'status',
-            },
-            ExpressionAttributeValues: {
-                ':status': status,
-            },
-            ReturnValues: 'ALL_NEW',
+        };
+        const existing = await dynamoDB.get(getParams).promise();
+
+        if (!existing.Item) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+
+        // Update status
+        const updatedItem = {
+            ...existing.Item,
+            status: status,
+            updatedAt: new Date().toISOString()
         };
 
-        const updated = await dynamoDB.update(params).promise();
-        res.json(updated.Attributes);
+        // Save back
+        await dynamoDB.put({
+            TableName: TABLE_NAME,
+            Item: updatedItem
+        }).promise();
+
+        res.json(updatedItem);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error updating request' });
@@ -102,4 +111,4 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

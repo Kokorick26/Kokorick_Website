@@ -7,8 +7,8 @@ import { Menu, X } from "lucide-react"
 import logo from "../assets/logo.png"
 
 interface NavbarProps {
-  currentPage?: "home" | "about" | "services" | "projects" | "get-started" | "admin";
-  setCurrentPage?: (page: "home" | "about" | "services" | "projects" | "get-started" | "admin") => void;
+  currentPage?: "home" | "about" | "services" | "projects" | "get-started" | "admin" | "project-details" | "blog" | "blog-detail";
+  setCurrentPage?: (page: "home" | "about" | "services" | "projects" | "get-started" | "admin" | "project-details" | "blog" | "blog-detail") => void;
 }
 
 export function Navbar({ currentPage = "home", setCurrentPage }: NavbarProps) {
@@ -16,7 +16,7 @@ export function Navbar({ currentPage = "home", setCurrentPage }: NavbarProps) {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const handleNavigation = (page: "home" | "about" | "services" | "projects" | "get-started" | "admin") => {
+  const handleNavigation = (page: "home" | "about" | "services" | "projects" | "get-started" | "admin" | "project-details" | "blog" | "blog-detail") => {
     if (setCurrentPage) {
       // Update URL without page reload
       const paths: Record<typeof page, string> = {
@@ -26,6 +26,9 @@ export function Navbar({ currentPage = "home", setCurrentPage }: NavbarProps) {
         projects: "/projects",
         "get-started": "/get-started",
         admin: "/login",
+        "project-details": "/projects",
+        blog: "/blog",
+        "blog-detail": "/blog",
       };
 
       window.history.pushState({}, "", paths[page]);
@@ -35,18 +38,21 @@ export function Navbar({ currentPage = "home", setCurrentPage }: NavbarProps) {
   }
 
   const navItems = [
-    { label: "Home", page: "home" as const },
     { label: "About", page: "about" as const },
     { label: "Services", page: "services" as const },
-    { label: "Projects", page: "projects" as const },
+    { label: "Case Studies", page: "projects" as const },
+    { label: "Blog", page: "blog" as const },
   ]
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4">
-      <div className="flex items-center justify-between px-6 py-3 bg-white/10 backdrop-blur-lg rounded-full border border-white/10 shadow-xl w-full max-w-4xl relative">
-        <div className="flex items-center">
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-4 sm:py-6 px-4">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-black/80 backdrop-blur-lg rounded-full border border-white/10 shadow-xl w-full max-w-4xl relative">
+        <div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => handleNavigation("home")}
+        >
           <motion.div
-            className="w-8 h-8 mr-6"
+            className="w-8 h-8"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             whileHover={{ rotate: 10 }}
@@ -54,6 +60,7 @@ export function Navbar({ currentPage = "home", setCurrentPage }: NavbarProps) {
           >
             <img src={logo} alt="Kokorick Logo" className="w-full h-full object-contain" />
           </motion.div>
+          <span className="text-white font-bold text-xl tracking-tight">Kokorick</span>
         </div>
 
         {/* Desktop Navigation */}

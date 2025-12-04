@@ -2,17 +2,17 @@ import { motion, useInView, useMotionValue, useSpring } from "motion/react";
 import { useEffect, useRef } from "react";
 
 const stats = [
-  { number: 10, suffix: "+", label: "Year Experiences" },
-  { number: 100, suffix: "+", label: "Trusted Clients" },
-  { number: 1000, suffix: "+", label: "Resources" },
+  { number: 2, suffix: "+", label: "Year Experiences" },
+  { number: 5, suffix: "+", label: "Trusted Clients" },
+  { number: 20, suffix: "+", label: "Resources" },
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, {
-    damping: 50,
-    stiffness: 100,
+    damping: 40,
+    stiffness: 400,
   });
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -35,7 +35,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 
 export function StatsSection() {
   return (
-    <section className="relative py-32 px-6 bg-black overflow-hidden">
+    <section className="relative py-20 md:py-24 px-6 bg-black overflow-hidden">
       <div className="relative max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-12">
           {stats.map((stat, index) => (
@@ -47,7 +47,7 @@ export function StatsSection() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <h2 className="text-7xl md:text-8xl text-white mb-4 font-light tracking-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white mb-4 font-light tracking-tight">
                 <AnimatedCounter value={stat.number} suffix={stat.suffix} />
               </h2>
               <p className="text-white/50 text-base tracking-wide">{stat.label}</p>

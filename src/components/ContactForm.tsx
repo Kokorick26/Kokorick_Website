@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
+import { ServiceDropdown } from "./admin/ServiceDropdown";
 
 interface FormData {
   name: string;
@@ -12,7 +13,7 @@ interface FormData {
   phone: string;
   company: string;
   service: string;
-  budget: string;
+
   message: string;
 }
 
@@ -23,7 +24,7 @@ export function ContactForm() {
     phone: "",
     company: "",
     service: "",
-    budget: "",
+
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -58,7 +59,7 @@ export function ContactForm() {
         phone: "",
         company: "",
         service: "",
-        budget: "",
+
         message: "",
       });
 
@@ -74,8 +75,8 @@ export function ContactForm() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const inputClasses = "bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all duration-300 hover:bg-white/10 h-12 rounded-xl";
-  const labelClasses = "text-sm font-medium text-white/70 mb-1.5 block";
+  const inputClasses = "bg-zinc-800/40 dark:bg-zinc-800/40 border border-zinc-700 dark:border-zinc-700 text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-white/30 focus:border-blue-500/50 focus:ring-blue-500/20 transition-all duration-300 hover:bg-zinc-800/60 dark:hover:bg-zinc-800/60 h-12 rounded-xl";
+  const labelClasses = "text-sm font-medium text-zinc-700 dark:text-white/70 mb-1.5 block";
 
   if (status === "success") {
     return (
@@ -87,8 +88,8 @@ export function ContactForm() {
         <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mb-6">
           <CheckCircle2 className="w-10 h-10 text-green-400" />
         </div>
-        <h3 className="text-2xl text-white font-medium mb-2">Message Sent!</h3>
-        <p className="text-white/70 text-center max-w-md">
+        <h3 className="text-2xl text-zinc-900 dark:text-white font-medium mb-2">Message Sent!</h3>
+        <p className="text-zinc-600 dark:text-white/70 text-center max-w-md">
           We've received your inquiry and will get back to you within 24 hours.
         </p>
       </motion.div>
@@ -160,45 +161,13 @@ export function ContactForm() {
 
         <div className="space-y-2">
           <Label htmlFor="service" className={labelClasses}>Service Interested In *</Label>
-          <div className="relative">
-            <select
-              id="service"
-              required
-              value={formData.service}
-              onChange={(e) => handleChange("service", e.target.value)}
-              className={`${inputClasses} w-full py-2 px-3 [color-scheme:dark]`}
-            >
-              <option value="" disabled className="bg-zinc-900 text-white">Select a service</option>
-              <option value="ai-research" className="bg-zinc-900 text-white">AI Research & Development</option>
-              <option value="full-stack" className="bg-zinc-900 text-white">Full-Stack AI Engineering</option>
-              <option value="agentic" className="bg-zinc-900 text-white">Agentic AI Systems</option>
-              <option value="rag" className="bg-zinc-900 text-white">RAG & Knowledge Systems</option>
-              <option value="safety" className="bg-zinc-900 text-white">AI Safety & Evaluation</option>
-              <option value="mlops" className="bg-zinc-900 text-white">MLOps & Infrastructure</option>
-              <option value="consulting" className="bg-zinc-900 text-white">Consulting</option>
-              <option value="other" className="bg-zinc-900 text-white">Other</option>
-            </select>
-          </div>
+          <ServiceDropdown
+            value={formData.service}
+            onChange={(service) => handleChange("service", service)}
+          />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="budget" className={labelClasses}>Project Budget</Label>
-          <div className="relative">
-            <select
-              id="budget"
-              value={formData.budget}
-              onChange={(e) => handleChange("budget", e.target.value)}
-              className={`${inputClasses} w-full py-2 px-3 [color-scheme:dark]`}
-            >
-              <option value="" disabled className="bg-zinc-900 text-white">Select budget range</option>
-              <option value="10k-25k" className="bg-zinc-900 text-white">$10k - $25k</option>
-              <option value="25k-50k" className="bg-zinc-900 text-white">$25k - $50k</option>
-              <option value="50k-100k" className="bg-zinc-900 text-white">$50k - $100k</option>
-              <option value="100k+" className="bg-zinc-900 text-white">$100k+</option>
-              <option value="not-sure" className="bg-zinc-900 text-white">Not sure yet</option>
-            </select>
-          </div>
-        </div>
+
       </div>
 
       <div className="space-y-2">
@@ -216,7 +185,7 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={status === "loading"}
-        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 font-medium py-6 text-lg rounded-xl"
+        className="w-full bg-white text-black hover:bg-zinc-200 transition-all duration-300 font-bold py-6 text-lg rounded-xl shadow-lg shadow-white/10"
       >
         {status === "loading" ? (
           <span className="flex items-center gap-2">

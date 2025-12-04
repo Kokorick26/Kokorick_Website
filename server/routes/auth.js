@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const dynamoDB = require('../db');
-const { v4: uuidv4 } = require('uuid');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
+import dynamoDB from '../db.js';
 
+const router = express.Router();
 const TABLE_NAME = 'AdminUsers';
 
 // Register Admin (One-time setup or protected)
@@ -95,4 +95,4 @@ router.post('/login', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

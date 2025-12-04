@@ -76,10 +76,10 @@ export function JoinUsCTA() {
               <p className="text-sm">
                 Prefer email?{" "}
                 <a
-                  href="mailto:hello@kokorick.com"
+                  href="mailto:hello@kokorick.uk"
                   className="text-blue-400 hover:text-blue-300 transition-colors underline"
                 >
-                  hello@kokorick.com
+                  hello@kokorick.uk
                 </a>
               </p>
             </motion.div>

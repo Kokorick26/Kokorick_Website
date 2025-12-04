@@ -28,7 +28,7 @@ export default function GetStartedPage() {
       <section className="min-h-screen flex items-center justify-center bg-black pt-24 pb-20 px-4">
         <div className="w-full max-w-5xl mx-auto">
           <AnimatedSection>
-            <div className="p-8 md:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm">
+            <div className="p-8 md:p-12 rounded-3xl bg-zinc-800/40 border border-zinc-700 backdrop-blur-sm">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl text-white mb-4 font-medium">
                   Tell Us About Your Project
@@ -58,7 +58,7 @@ export default function GetStartedPage() {
                 { step: "3", title: "We Propose", desc: "Receive a tailored proposal with timeline and pricing" },
               ].map((item, i) => (
                 <div key={i} className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl font-bold text-white mx-auto mb-4">
+                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-2xl font-bold text-black mx-auto mb-4">
                     {item.step}
                   </div>
                   <h3 className="text-xl text-white font-medium mb-2">{item.title}</h3>

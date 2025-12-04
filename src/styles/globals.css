@@ -256,6 +256,11 @@ html, body {
   animation: marquee var(--duration) linear infinite;
 }
 
+/* Pause marquee on hover */
+.group:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
 /* Vertical marquee animation */
 @keyframes marquee-vertical {
   from {
@@ -358,4 +363,54 @@ body {
 [data-slot="select-item"]:focus {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: white !important;
+}
+
+/* Admin Panel Layout */
+.admin-panel {
+  display: flex;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: #09090b;
+  border-right: 1px solid #27272a;
+  z-index: 50;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-main {
+  flex: 1;
+  margin-left: 280px;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+/* Mobile responsive */
+@media (max-width: 1023px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .admin-sidebar.translate-x-0 {
+    transform: translateX(0);
+  }
+  
+  .admin-main {
+    margin-left: 0;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1024px) {
+  .admin-sidebar {
+    transform: translateX(0) !important;
+  }
 }

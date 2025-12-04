@@ -1,14 +1,16 @@
-const AWS = require('aws-sdk');
-require('dotenv').config();
+import AWS from 'aws-sdk';
+import dotenv from 'dotenv';
 
-const awsConfig = {
-    region: process.env.AWS_REGION || 'us-east-1',
+dotenv.config();
+
+// Configure AWS
+AWS.config.update({
+    region: process.env.AWS_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-};
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
 
-AWS.config.update(awsConfig);
-
+// Use real DynamoDB DocumentClient
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-module.exports = dynamoDB;
+export default dynamoDB;
