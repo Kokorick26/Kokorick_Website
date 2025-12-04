@@ -58,9 +58,9 @@ export function Navbar({ currentPage = "home", setCurrentPage }: NavbarProps) {
             whileHover={{ rotate: 10 }}
             transition={{ duration: 0.3 }}
           >
-            <img src={logo} alt="Kokorick Logo" className="w-full h-full object-contain" />
+            <img src={logo} alt="Kokorick AI Logo" className="w-full h-full object-contain" />
           </motion.div>
-          <span className="text-white font-bold text-xl tracking-tight">Kokorick</span>
+          <span className="text-white font-bold text-xl tracking-tight">Kokorick AI</span>
         </div>
 
         {/* Desktop Navigation */}

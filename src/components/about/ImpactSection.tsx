@@ -36,12 +36,12 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 
 const testimonials = [
   {
-    quote: "Kokorick transformed our AI pipeline from prototype to production in weeks, not months. Their attention to detail and system reliability is unmatched.",
+    quote: "Kokorick AI transformed our AI pipeline from prototype to production in weeks, not months. Their attention to detail and system reliability is unmatched.",
     author: "Sarah Johnson",
     role: "CTO, TechCorp",
   },
   {
-    quote: "Working with Kokorick gave us confidence in our AI systems. Everything is measurable, auditable, and built for the long term.",
+    quote: "Working with Kokorick AI gave us confidence in our AI systems. Everything is measurable, auditable, and built for the long term.",
     author: "Michael Chen",
     role: "VP Engineering, DataFlow",
   },

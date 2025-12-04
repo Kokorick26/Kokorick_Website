@@ -76,6 +76,12 @@ const marqueeItems = [
 
 export function CTASection() {
   const marqueeRef = useRef<HTMLDivElement>(null);
+  
+  const handleNavigation = (path: string) => {
+    window.history.pushState({}, "", path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const marqueeContainer = marqueeRef.current;
@@ -117,14 +123,20 @@ export function CTASection() {
               Ready to Build Intelligent Systems?
             </h1>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed animate-fade-in-up [animation-delay:400ms]">
-              Transform your AI research into production-ready solutions. Partner with Kokorick to bridge the gap between innovation and implementation.
+              Transform your AI research into production-ready solutions. Partner with Kokorick AI to bridge the gap between innovation and implementation.
             </p>
             <div className="flex flex-wrap gap-4 animate-fade-in-up [animation-delay:600ms]">
-              <button className="group relative px-6 py-3 bg-white text-black rounded-md overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg">
+              <button 
+                className="group relative px-6 py-3 bg-white text-black rounded-md overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                onClick={() => handleNavigation('/get-started')}
+              >
                 <span className="relative z-10">START A PROJECT</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
               </button>
-              <button className="group relative px-6 py-3 bg-transparent text-white rounded-md overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg border border-white/20">
+              <button 
+                className="group relative px-6 py-3 bg-transparent text-white rounded-md overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg border border-white/20"
+                onClick={() => handleNavigation('/get-started')}
+              >
                 <span className="relative z-10">BOOK A DISCOVERY CALL</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
               </button>

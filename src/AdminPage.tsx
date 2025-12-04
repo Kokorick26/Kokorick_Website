@@ -18,7 +18,12 @@ import {
   BookOpen,
   Mail,
   Users,
-  BarChart3
+  BarChart3,
+  Shield,
+  UserCog,
+  Key,
+  ClipboardList,
+  User
 } from "lucide-react";
 import logo from "./assets/logo.png";
 import TestimonialsManager from "./components/admin/TestimonialsManager";
@@ -29,6 +34,12 @@ import NewsletterManager from "./components/admin/NewsletterManager";
 import TeamManager from "./components/admin/TeamManager";
 import AnalyticsDashboard, { Visit, BlogPost } from "./components/admin/AnalyticsDashboard";
 import { StatusDropdown } from "./components/admin/StatusDropdown";
+import { AuthProvider, useAuth, Permission } from "./contexts/AuthContext";
+import PasswordResetModal from "./components/admin/PasswordResetModal";
+import UserManagementPage from "./components/admin/UserManagementPage";
+import ProfilePage from "./components/admin/ProfilePage";
+import RoleManagementPage from "./components/admin/RoleManagementPage";
+import AuditLogViewer from "./components/admin/AuditLogViewer";
 
 // Types
 interface ContactRequest {
@@ -44,9 +55,20 @@ interface ContactRequest {
   timestamp: string;
 }
 
-interface User {
-  username: string;
-}
+type PageType = 
+  | "dashboard" 
+  | "requests" 
+  | "testimonials" 
+  | "team" 
+  | "projects" 
+  | "blogs" 
+  | "whitepapers" 
+  | "newsletter" 
+  | "analytics"
+  | "users"
+  | "roles"
+  | "audit-logs"
+  | "profile";
 
 // API Functions
 const API_BASE = "/api";
@@ -101,21 +123,9 @@ async function fetchBlogs(): Promise<BlogPost[]> {
   return Array.isArray(data) ? data : [];
 }
 
-async function loginApi(username: string, password: string): Promise<{ token: string; user: User }> {
-  const res = await fetch(`${API_BASE}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || "Login failed");
-  }
-  return res.json();
-}
-
-// Login Component
-function LoginPage({ onLogin }: { onLogin: () => void }) {
+// Login Component - Now uses AuthContext
+function LoginPage() {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -127,10 +137,10 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
     setLoading(true);
 
     try {
-      const { token, user } = await loginApi(username, password);
-      localStorage.setItem("adminToken", token);
-      localStorage.setItem("adminUser", JSON.stringify(user));
-      onLogin();
+      const result = await login(username, password);
+      if (!result.success) {
+        setError(result.error || "Login failed");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -149,7 +159,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
       <div className="w-full max-w-md relative z-10 bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 p-8 rounded-2xl shadow-2xl">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-8">
-            <img src={logo} alt="Kokorick" className="h-16 w-auto object-contain" />
+            <img src={logo} alt="Kokorick AI" className="h-16 w-auto object-contain" />
           </div>
           <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
           <p className="text-zinc-400 mt-2">Sign in to access the admin dashboard</p>
@@ -200,40 +210,83 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
   );
 }
 
-// Main Admin Page
-export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [currentPage, setCurrentPage] = useState<"dashboard" | "requests" | "testimonials" | "team" | "projects" | "blogs" | "whitepapers" | "newsletter" | "analytics">("dashboard");
+// Cache keys for localStorage
+const CACHE_KEYS = {
+  currentPage: 'admin_currentPage',
+  requests: 'admin_requests',
+  requestsTimestamp: 'admin_requests_timestamp',
+  statusFilter: 'admin_statusFilter',
+};
+
+// Cache duration in milliseconds (5 minutes)
+const CACHE_DURATION = 5 * 60 * 1000;
+
+// Admin Dashboard Content - Separated for use within AuthProvider
+function AdminDashboard() {
+  const { user, logout, hasPermission, isSuperAdmin, isLoading } = useAuth();
+  
+  // Initialize state from localStorage cache
+  const [currentPage, setCurrentPage] = useState<PageType>(() => {
+    const cached = localStorage.getItem(CACHE_KEYS.currentPage);
+    return (cached as PageType) || "dashboard";
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [requests, setRequests] = useState<ContactRequest[]>([]);
+  const [requests, setRequests] = useState<ContactRequest[]>(() => {
+    try {
+      const cached = localStorage.getItem(CACHE_KEYS.requests);
+      const timestamp = localStorage.getItem(CACHE_KEYS.requestsTimestamp);
+      if (cached && timestamp) {
+        const age = Date.now() - parseInt(timestamp);
+        if (age < CACHE_DURATION) {
+          return JSON.parse(cached);
+        }
+      }
+    } catch {}
+    return [];
+  });
   const [visits, setVisits] = useState<Visit[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState(() => {
+    return localStorage.getItem(CACHE_KEYS.statusFilter) || "all";
+  });
   const [selectedRequest, setSelectedRequest] = useState<ContactRequest | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
 
-  // Check auth on mount
+  // Save current page to localStorage when it changes
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    const userStr = localStorage.getItem("adminUser");
-    if (token && userStr) {
-      setIsAuthenticated(true);
-      try {
-        setUser(JSON.parse(userStr));
-      } catch { }
+    localStorage.setItem(CACHE_KEYS.currentPage, currentPage);
+  }, [currentPage]);
+
+  // Save status filter to localStorage
+  useEffect(() => {
+    localStorage.setItem(CACHE_KEYS.statusFilter, statusFilter);
+  }, [statusFilter]);
+
+  // Cache requests data
+  useEffect(() => {
+    if (requests.length > 0) {
+      localStorage.setItem(CACHE_KEYS.requests, JSON.stringify(requests));
+      localStorage.setItem(CACHE_KEYS.requestsTimestamp, Date.now().toString());
     }
-  }, []);
+  }, [requests]);
+
+  // Check for first login
+  useEffect(() => {
+    if (user?.isFirstLogin) {
+      setShowPasswordReset(true);
+    }
+  }, [user?.isFirstLogin]);
 
   // Fetch requests when authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user) {
       loadRequests();
       loadAnalyticsData();
     }
-  }, [isAuthenticated]);
+  }, [user]);
 
   const loadRequests = async () => {
     setLoading(true);
@@ -263,17 +316,8 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogin = () => {
-    const userStr = localStorage.getItem("adminUser");
-    if (userStr) setUser(JSON.parse(userStr));
-    setIsAuthenticated(true);
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUser");
-    setIsAuthenticated(false);
-    setUser(null);
+    logout();
   };
 
   const handleUpdateStatus = async (id: string, status: string) => {
@@ -309,8 +353,21 @@ export default function AdminPage() {
     }
   };
 
-  if (!isAuthenticated) {
-    return <LoginPage onLogin={handleLogin} />;
+  // Show loading spinner while checking auth
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-zinc-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login page if not authenticated
+  if (!user) {
+    return <LoginPage />;
   }
 
   const stats = {
@@ -325,17 +382,51 @@ export default function AdminPage() {
     return matchesStatus;
   });
 
-  const navItems = [
+  // Permission-based navigation items
+  interface NavItem {
+    id: PageType;
+    label: string;
+    icon: typeof LayoutDashboard;
+    permission?: Permission;
+    superAdminOnly?: boolean;
+    divider?: boolean;
+  }
+
+  const allNavItems: NavItem[] = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "analytics", label: "Analytics", icon: BarChart3 },
-    { id: "requests", label: "Requests", icon: Inbox },
-    { id: "testimonials", label: "Testimonials", icon: MessageSquareQuote },
-    { id: "team", label: "Team", icon: Users },
-    { id: "projects", label: "Projects", icon: FolderKanban },
-    { id: "blogs", label: "Blog Posts", icon: FileText },
-    { id: "whitepapers", label: "Whitepapers", icon: BookOpen },
-    { id: "newsletter", label: "Newsletter", icon: Mail }
+    { id: "analytics", label: "Analytics", icon: BarChart3, permission: "analytics" },
+    { id: "requests", label: "Requests", icon: Inbox, permission: "requests" },
+    { id: "testimonials", label: "Testimonials", icon: MessageSquareQuote, permission: "testimonials" },
+    { id: "team", label: "Team", icon: Users, permission: "team" },
+    { id: "projects", label: "Projects", icon: FolderKanban, permission: "projects" },
+    { id: "blogs", label: "Blog Posts", icon: FileText, permission: "blogs" },
+    { id: "whitepapers", label: "Whitepapers", icon: BookOpen, permission: "whitepapers" },
+    { id: "newsletter", label: "Newsletter", icon: Mail, permission: "newsletter" },
+    // Admin-only items
+    { id: "users", label: "User Management", icon: UserCog, superAdminOnly: true, divider: true },
+    { id: "roles", label: "Role Management", icon: Key, superAdminOnly: true },
+    { id: "audit-logs", label: "Audit Logs", icon: ClipboardList, superAdminOnly: true },
   ];
+
+  // Filter nav items based on user permissions
+  const navItems = allNavItems.filter(item => {
+    if (item.superAdminOnly && !isSuperAdmin()) return false;
+    if (item.permission && !hasPermission(item.permission)) return false;
+    return true;
+  });
+
+  // Role badge styling
+  const getRoleBadge = () => {
+    if (isSuperAdmin()) {
+      return { bg: "bg-red-500/10", text: "text-red-400", label: "Super Admin" };
+    }
+    if (user.role === "Admin") {
+      return { bg: "bg-blue-500/10", text: "text-blue-400", label: "Admin" };
+    }
+    return { bg: "bg-zinc-500/10", text: "text-zinc-400", label: user.role || "User" };
+  };
+
+  const roleBadge = getRoleBadge();
 
   return (
     <div className="admin-panel">
@@ -347,36 +438,51 @@ export default function AdminPage() {
       {/* Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}>
         <div className="h-16 flex items-center gap-3 px-6 border-b border-zinc-800">
-          <img src={logo} alt="Kokorick" className="w-8 h-8 object-contain" />
-          <span className="font-bold text-lg text-white">Kokorick</span>
+          <img src={logo} alt="Kokorick AI" className="w-8 h-8 object-contain" />
+          <span className="font-bold text-lg text-white">Kokorick AI</span>
         </div>
 
-        <nav className="p-4 space-y-2 flex-1 overflow-y-auto overscroll-contain">
-          {navItems.map(item => (
-            <button
-              key={item.id}
-              onClick={() => { setCurrentPage(item.id as "dashboard" | "requests" | "testimonials" | "projects" | "blogs" | "whitepapers"); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${currentPage === item.id
-                ? "bg-white text-black shadow-lg shadow-white/10"
-                : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
-                }`}
-            >
-              <item.icon className={`w-5 h-5 ${currentPage === item.id ? "text-black" : "text-zinc-500 group-hover:text-white"}`} />
-              {item.label}
-            </button>
+        <nav className="p-4 space-y-1">
+          {navItems.map((item, index) => (
+            <div key={item.id}>
+              {item.divider && index > 0 && (
+                <div className="my-4 border-t border-zinc-800 pt-4">
+                  <p className="px-4 text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Administration</p>
+                </div>
+              )}
+              <button
+                onClick={() => { setCurrentPage(item.id); setSidebarOpen(false); }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${currentPage === item.id
+                  ? "bg-white text-black shadow-lg shadow-white/10"
+                  : "text-zinc-400 hover:bg-zinc-800/50 hover:text-white"
+                  }`}
+              >
+                <item.icon className={`w-5 h-5 ${currentPage === item.id ? "text-black" : "text-zinc-500 group-hover:text-white"}`} />
+                {item.label}
+                {item.superAdminOnly && (
+                  <Shield className="w-3 h-3 ml-auto text-red-400" />
+                )}
+              </button>
+            </div>
           ))}
         </nav>
 
         <div className="p-4 border-t border-zinc-800 shrink-0">
-          <div className="flex items-center gap-3 mb-3">
+          <button 
+            onClick={() => setCurrentPage("profile")}
+            className="w-full flex items-center gap-3 mb-3 p-2 rounded-xl hover:bg-zinc-800/50 transition-colors cursor-pointer"
+          >
             <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-xs font-bold text-black">
               {user?.username?.substring(0, 2).toUpperCase() || "AD"}
             </div>
-            <div>
-              <p className="text-sm font-medium text-white">{user?.username || "Admin"}</p>
-              <p className="text-xs text-zinc-500">Administrator</p>
+            <div className="flex-1 text-left">
+              <p className="text-sm font-medium text-white">{user?.fullName || user?.username || "Admin"}</p>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${roleBadge.bg} ${roleBadge.text}`}>
+                {roleBadge.label}
+              </span>
             </div>
-          </div>
+            <User className="w-4 h-4 text-zinc-500" />
+          </button>
           <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
             <LogOut className="w-4 h-4" />
             Logout
@@ -620,6 +726,14 @@ export default function AdminPage() {
             <WhitepapersManager />
           ) : currentPage === "newsletter" ? (
             <NewsletterManager />
+          ) : currentPage === "users" ? (
+            <UserManagementPage />
+          ) : currentPage === "roles" ? (
+            <RoleManagementPage />
+          ) : currentPage === "audit-logs" ? (
+            <AuditLogViewer />
+          ) : currentPage === "profile" ? (
+            <ProfilePage />
           ) : null}
         </main>
       </div>
@@ -764,6 +878,22 @@ export default function AdminPage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Password Reset Modal for First Login */}
+      <PasswordResetModal 
+        isOpen={showPasswordReset} 
+        onComplete={() => setShowPasswordReset(false)} 
+        isFirstLogin={user?.isFirstLogin || false}
+      />
     </div>
+  );
+}
+
+// Main Admin Page wrapped with AuthProvider
+export default function AdminPage() {
+  return (
+    <AuthProvider>
+      <AdminDashboard />
+    </AuthProvider>
   );
 }

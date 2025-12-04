@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { Linkedin, Github, Twitter, ChevronLeft, ChevronRight } from "lucide-react";
+import { Linkedin, Twitter, ChevronLeft, ChevronRight } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 interface TeamMember {
@@ -11,7 +11,6 @@ interface TeamMember {
   bio: string;
   image: string;
   linkedin?: string;
-  github?: string;
   twitter?: string;
   order: number;
   published: boolean;
@@ -190,16 +189,6 @@ export function TeamSection() {
                         className="w-8 h-8 rounded-full bg-white/10 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 flex items-center justify-center transition-all"
                       >
                         <Linkedin className="w-4 h-4 text-white/60 hover:text-blue-400" />
-                      </a>
-                    )}
-                    {member.github && (
-                      <a
-                        href={member.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 flex items-center justify-center transition-all"
-                      >
-                        <Github className="w-4 h-4 text-white/60 hover:text-blue-400" />
                       </a>
                     )}
                     {member.twitter && (

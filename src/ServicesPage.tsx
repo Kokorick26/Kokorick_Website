@@ -316,6 +316,11 @@ export default function ServicesPage() {
                 className="px-10 py-4 rounded-full bg-white text-black font-medium hover:bg-white/90 transition-colors shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  window.history.pushState({}, "", '/get-started');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
               >
                 Start a conversation
               </motion.button>

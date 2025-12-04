@@ -2,6 +2,12 @@ import { motion } from "motion/react";
 import { ArrowRight, Mail } from "lucide-react";
 
 export function JoinUsCTA() {
+  const handleNavigation = (path: string) => {
+    window.history.pushState({}, "", path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <section className="relative py-20 sm:py-32 px-4 sm:px-6 bg-black">
       <div className="max-w-5xl mx-auto">
@@ -50,17 +56,11 @@ export function JoinUsCTA() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => handleNavigation('/get-started')}
                 className="w-full sm:w-auto px-10 py-4 rounded-full bg-white text-black hover:bg-white/90 transition-colors flex items-center justify-center gap-2 group"
               >
                 <span>Work with us</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-10 py-4 rounded-full bg-transparent border border-white/20 text-white hover:bg-white/5 transition-colors"
-              >
-                Explore Careers
               </motion.button>
             </motion.div>
 

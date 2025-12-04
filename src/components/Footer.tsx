@@ -10,7 +10,7 @@ import logo from "../assets/logo.png";
 
 function Logo() {
   return (
-    <img src={logo} alt="Kokorick Logo" className="w-10 h-10 object-contain" />
+    <img src={logo} alt="Kokorick AI Logo" className="w-10 h-10 object-contain" />
   );
 }
 
@@ -140,7 +140,7 @@ export function Footer() {
             className="text-center"
           >
             <p className="text-sm text-white/50">
-              © 2025 Kokorick. All rights reserved.
+              © 2025 Kokorick AI. All rights reserved.
             </p>
             <p className="text-xs text-white/30 mt-1">
               AI-Driven Software Engineering Studio

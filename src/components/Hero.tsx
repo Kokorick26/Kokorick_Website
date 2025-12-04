@@ -3,6 +3,12 @@ import { ShaderAnimation } from "./ShaderAnimation";
 import { cn } from "./ui/utils";
 
 export function Hero() {
+  const handleNavigation = (path: string) => {
+    window.history.pushState({}, "", path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-x-hidden overflow-y-visible bg-black">
       {/* Shader Animation Background */}
@@ -52,7 +58,7 @@ export function Hero() {
           <span className="relative inline-block text-[#e7dfd6]">
             reason.
           </span>{' '}
-          At Kokorick, we turn deep tech research into scalable, production-grade solutions — from agentic AI platforms to full-stack enterprise systems.
+          At Kokorick AI, we turn deep tech research into scalable, production-grade solutions — from agentic AI platforms to full-stack enterprise systems.
         </motion.p>
 
         <motion.div
@@ -65,6 +71,7 @@ export function Hero() {
             className="px-10 py-3.5 rounded-full bg-white text-black hover:bg-white/90 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => handleNavigation('/get-started')}
           >
             Talk to Our Team
           </motion.button>
@@ -72,6 +79,7 @@ export function Hero() {
             className="px-10 py-3.5 rounded-full bg-transparent border border-white/20 text-white hover:bg-white/5 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => handleNavigation('/projects')}
           >
             View Our Work
           </motion.button>

@@ -15,7 +15,7 @@ const timelineData = [
   {
     year: "2025",
     title: "Platform Launch",
-    description: "Launch of Kokorick modular AI platform.",
+    description: "Launch of Kokorick AI modular AI platform.",
   },
 ];
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Save, Loader2, Linkedin, Github, Twitter } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Linkedin, Twitter } from "lucide-react";
 import ImageUpload from "./ImageUpload";
 import { toast } from "sonner";
 
@@ -11,7 +11,6 @@ interface TeamMember {
     bio: string;
     image: string;
     linkedin?: string;
-    github?: string;
     twitter?: string;
     order: number;
     published: boolean;
@@ -216,16 +215,6 @@ export default function TeamEditor({ onSuccess, onCancel, editMember }: TeamEdit
                                             onChange={e => setFormData({ ...formData, linkedin: e.target.value })}
                                             className="flex-1 bg-transparent text-sm text-zinc-300 placeholder-zinc-600 focus:outline-none"
                                             placeholder="https://linkedin.com/in/username"
-                                        />
-                                    </div>
-                                    <div className="flex items-center gap-3 bg-zinc-800/30 p-3 rounded-lg border border-zinc-700/50">
-                                        <Github className="w-5 h-5 text-zinc-400 flex-shrink-0" />
-                                        <input
-                                            type="url"
-                                            value={formData.github || ""}
-                                            onChange={e => setFormData({ ...formData, github: e.target.value })}
-                                            className="flex-1 bg-transparent text-sm text-zinc-300 placeholder-zinc-600 focus:outline-none"
-                                            placeholder="https://github.com/username"
                                         />
                                     </div>
                                     <div className="flex items-center gap-3 bg-zinc-800/30 p-3 rounded-lg border border-zinc-700/50">

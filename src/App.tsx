@@ -117,24 +117,37 @@ export default function App() {
     return null;
   });
 
-  // Initialize Lenis for smooth scrolling
+  // Initialize Lenis for smooth scrolling (only on non-admin pages)
   useEffect(() => {
+    // Don't initialize Lenis on admin pages - admin has its own scroll handling
+    if (currentPage === "admin") {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      touchMultiplier: 2,
+      infinite: false,
     });
+
+    let animationId: number;
 
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      animationId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    animationId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(animationId);
       lenis.destroy();
     };
-  }, []);
+  }, [currentPage]);
 
   // Listen for popstate (back/forward navigation)
   useEffect(() => {
@@ -226,9 +239,9 @@ export default function App() {
   if (currentPage === "admin") {
     return (
       <>
-        <Toaster 
-          position="top-right" 
-          richColors 
+        <Toaster
+          position="top-right"
+          richColors
           closeButton
           theme="dark"
           toastOptions={{
@@ -246,9 +259,9 @@ export default function App() {
 
   return (
     <div className="w-full bg-black">
-      <Toaster 
-        position="top-right" 
-        richColors 
+      <Toaster
+        position="top-right"
+        richColors
         closeButton
         theme="dark"
         toastOptions={{

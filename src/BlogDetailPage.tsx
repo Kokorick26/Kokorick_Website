@@ -80,7 +80,7 @@ export default function BlogDetailPage({ slug, onBack, onBlogClick }: BlogDetail
             setBlog(data);
             
             // Update page title
-            document.title = `${data.title} | Kokorick Blog`;
+            document.title = `${data.title} | Kokorick AI Blog`;
         } catch (err) {
             console.error('Error fetching blog:', err);
             setError('Failed to load blog post');
