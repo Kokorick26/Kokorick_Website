@@ -1,0 +1,11 @@
+node_modules
+build
+.git
+.gitignore
+.env
+*.md
+.DS_Store
+.vscode
+*.pem
+deploy.sh
+.agent
