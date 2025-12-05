@@ -3,11 +3,12 @@ FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files first for better caching
+COPY package.json ./
+COPY package-lock.json* ./
 
-# Install dependencies
-RUN npm ci
+# Install all dependencies
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
@@ -20,19 +21,18 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Install nginx for serving static files
+# Install nginx
 RUN apk add --no-cache nginx
+
+# Copy package files and install production dependencies
+COPY package.json ./
+COPY package-lock.json* ./
+RUN npm install --production --legacy-peer-deps
 
 # Copy server files
 COPY server/ ./server/
-COPY package*.json ./
-
-# Install only production dependencies for server
-WORKDIR /app/server
-RUN npm install --production
 
 # Copy built frontend from builder stage
-WORKDIR /app
 COPY --from=frontend-builder /app/build ./build
 
 # Copy nginx configuration
