@@ -33,7 +33,7 @@ export function ServicesSection() {
             Turning intelligence into action with smarter, adaptive AI systems.
           </h2>
           <p className="text-white/50 text-lg">
-            Discover tailored AI solutions that unlock growth and innovation for your business. From strategy and custom AI models to automation and data engineering, we empower you with cutting-edge technology. Transform your operations with AI designed to deliver real, measurable impact.
+            Discover tailored AI solutions that unlock growth and innovation for your business. From strategy and custom AI models to automation and data engineering, we empower you with cutting edge technology. Transform your operations with AI designed to deliver real, measurable impact.
           </p>
         </motion.div>
 
@@ -79,8 +79,8 @@ export function ServicesSection() {
                     <Shield className="m-auto h-10 w-10 text-white" strokeWidth={1} />
                   </div>
                   <div className="relative z-10 mt-4 space-y-2 text-center">
-                    <h2 className="text-lg text-white">Production-Ready</h2>
-                    <p className="text-white/50 text-sm">Scalable systems built to handle real-world complexity and deliver reliable performance at scale.</p>
+                    <h2 className="text-lg text-white">Production Ready</h2>
+                    <p className="text-white/50 text-sm">Scalable systems built to handle real world complexity and deliver reliable performance at scale.</p>
                   </div>
                 </CardContent>
               </Card>
@@ -126,8 +126,8 @@ export function ServicesSection() {
                     </div>
                   </div>
                   <div className="relative z-10 mt-4 space-y-2 text-center">
-                    <h2 className="text-lg text-white">Full-Stack</h2>
-                    <p className="text-white/50 text-sm">End-to-end solutions from backend infrastructure to intelligent frontends.</p>
+                    <h2 className="text-lg text-white">Full Stack</h2>
+                    <p className="text-white/50 text-sm">End to end solutions from backend infrastructure to intelligent frontends.</p>
                   </div>
                 </CardContent>
               </Card>

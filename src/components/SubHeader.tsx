@@ -3,9 +3,9 @@
 import { motion } from "motion/react";
 
 const paragraphs = [
-  "Kokorick AI is a next-generation software studio specialising in AI-powered product engineering.",
-  "We combine deep-learning research, generative AI, and full-stack development to deliver intelligent systems that create measurable business impact.",
-  "Our expertise bridge AI and deployable software, transforming breakthrough models into automated, analytic, and scalable solutions for forward-thinking enterprises across industries."
+  "Kokorick AI is a next generation software studio specialising in AI powered product engineering.",
+  "We combine deep learning research, generative AI, and full stack development to deliver intelligent systems that create measurable business impact.",
+  "Our expertise bridge AI and deployable software, transforming breakthrough models into automated, analytic, and scalable solutions for forward thinking enterprises across industries."
 ];
 
 export function SubHeader() {

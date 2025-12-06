@@ -96,7 +96,7 @@ export function TeamSection() {
   }
 
   return (
-    <section className="relative py-20 sm:py-32 px-4 sm:px-6 bg-black overflow-hidden">
+    <section id="team-section" className="relative py-20 sm:py-32 px-4 sm:px-6 bg-black overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -15,11 +15,10 @@ function Logo() {
 }
 
 const navLinks = [
-  { name: "Home", href: "#" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
-  { name: "About", href: "#about" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", page: "/" },
+  { name: "Services", page: "/services" },
+  { name: "Projects", page: "/projects" },
+  { name: "About", page: "/about" },
 ];
 
 export function Footer() {
@@ -73,18 +72,22 @@ export function Footer() {
             className="mb-8 flex flex-wrap justify-center gap-6 text-white/70"
           >
             {navLinks.map((link, index) => (
-              <motion.a
+              <motion.button
                 key={link.name}
-                href={link.href}
+                onClick={() => {
+                  window.history.pushState({}, "", link.page);
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.1 + index * 0.05 }}
                 whileHover={{ scale: 1.05, color: "rgb(37, 99, 235)" }}
-                className="hover:text-primary transition-colors"
+                className="hover:text-primary transition-colors bg-transparent border-none cursor-pointer"
               >
                 {link.name}
-              </motion.a>
+              </motion.button>
             ))}
           </motion.nav>
 
@@ -143,7 +146,7 @@ export function Footer() {
               © 2025 Kokorick AI. All rights reserved.
             </p>
             <p className="text-xs text-white/30 mt-1">
-              AI-Driven Software Engineering Studio
+              AI Driven Software Engineering Studio
             </p>
           </motion.div>
         </div>

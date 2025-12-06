@@ -16,8 +16,8 @@ const capabilities = [
   },
   {
     icon: Layers,
-    title: "Full-Stack Platforms",
-    description: "Data ingestion, model serving, secure UI, observability; end-to-end ownership.",
+    title: "Full Stack Platforms",
+    description: "Data ingestion, model serving, secure UI, observability; end to end ownership.",
     link: "#",
   },
 ];

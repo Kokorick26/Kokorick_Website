@@ -73,7 +73,7 @@ function ServicesHero() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="max-w-3xl mx-auto text-white/70 text-lg sm:text-xl md:text-2xl leading-relaxed mb-12"
         >
-          From research prototypes to enterprise-grade AI platforms, we handle the full stack.
+          From research prototypes to enterprise grade AI platforms, we handle the full stack.
         </motion.p>
       </div>
     </section>
@@ -85,7 +85,7 @@ export default function ServicesPage() {
     {
       icon: Brain,
       title: "AI Strategy & Consultancy",
-      description: "We help startups, SMEs, enterprise teams, and even non-technical clients understand what AI can truly do for their businesses. From demystifying AI capabilities to crafting a tailored roadmap, our consultancy guides you every step of the way—transforming possibilities into clear, actionable plans that drive growth and innovation.",
+      description: "We help startups, SMEs, enterprise teams, and even non technical clients understand what AI can truly do for their businesses. From demystifying AI capabilities to crafting a tailored roadmap, our consultancy guides you every step of the way, transforming possibilities into clear, actionable plans that drive growth and innovation.",
       features: [
         "Tailored AI roadmaps",
         "Capability assessment",
@@ -99,7 +99,7 @@ export default function ServicesPage() {
     {
       icon: Rocket,
       title: "AI Agents & Agentic Automation",
-      description: "Experience autonomous AI systems that think, plan, and act like real employees, working tirelessly to boost your business operations. Clients gain AI-powered customer support agents, lead qualification and follow-up agents, workflow automations, research and reporting bots, and streamlined business process automation.",
+      description: "Experience autonomous AI systems that think, plan, and act like real employees, working tirelessly to boost your business operations. Clients gain AI powered customer support agents, lead qualification and follow up agents, workflow automations, research and reporting bots, and streamlined business process automation.",
       features: [
         "24/7 AI employees",
         "Customer support agents",
@@ -113,10 +113,10 @@ export default function ServicesPage() {
     {
       icon: Code2,
       title: "Custom LLM Development",
-      description: "Get tailor-made large language models built specifically for your business needs. From custom chatbots and knowledge-base-trained models to internal task assistants, document analysis, summarisation, and automated email-writing tools. Our solutions deliver AI uniquely trained on your own data.",
+      description: "Get tailor made large language models built specifically for your business needs. From custom chatbots and knowledge base trained models to internal task assistants, document analysis, summarisation, and automated email writing tools. Our solutions deliver AI uniquely trained on your own data.",
       features: [
         "Custom chatbots",
-        "Knowledge-base models",
+        "Knowledge base models",
         "Document analysis",
         "Automated writing tools"
       ],
@@ -183,7 +183,7 @@ export default function ServicesPage() {
     {
       icon: Database,
       title: "Data Engineering & Pipeline Setup",
-      description: "Build clean, organised, and automated data pipelines that power smarter AI. Our services include data cleaning, transformation, API-based ingestion, database setup, and rigorous data quality assurance. Efficient pipelines ensure your AI models train on reliable, high-quality data.",
+      description: "Build clean, organised, and automated data pipelines that power smarter AI. Our services include data cleaning, transformation, API based ingestion, database setup, and rigorous data quality assurance. Efficient pipelines ensure your AI models train on reliable, high quality data.",
       features: [
         "Data cleaning & transformation",
         "API ingestion",

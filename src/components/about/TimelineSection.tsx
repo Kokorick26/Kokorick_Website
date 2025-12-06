@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 const timelineData = [
   {
@@ -36,7 +36,7 @@ export function TimelineSection() {
             Our Story
           </h2>
           <p className="text-white/60 text-lg sm:text-xl max-w-3xl mx-auto">
-            From lab prototypes to resilient production systems — our story is one of engineering discipline and continuous deployment.
+            From lab prototypes to resilient production systems, our story is one of engineering discipline and continuous deployment.
           </p>
         </motion.div>
 
@@ -57,7 +57,7 @@ export function TimelineSection() {
               >
                 {/* Timeline dot */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500 border-4 border-black z-10" />
-                
+
                 {/* Content card */}
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 mt-8 hover:bg-white/10 transition-all duration-300">
                   <div className="text-4xl text-blue-400 mb-3">{item.year}</div>

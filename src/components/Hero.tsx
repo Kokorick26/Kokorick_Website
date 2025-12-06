@@ -38,9 +38,9 @@ export function Hero() {
                 'before:bg-[linear-gradient(0deg,#dfe5ee_0%,#fffaf6_50%)] before:bg-clip-text before:text-transparent',
                 '[filter:url(#glow-4)]',
               )}
-              data-text="AI Research & Real-World Impact"
+              data-text="AI Research & Real World Impact"
             >
-              AI Research & Real-World Impact
+              AI Research & Real World Impact
             </span>
           </div>
           <div className="text-3xl md:text-5xl lg:text-6xl text-white/90">
@@ -54,11 +54,11 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          We're an AI-driven software engineering studio building systems that don't just run — they{' '}
+          We're an AI driven software engineering studio building systems that don't just run, they{' '}
           <span className="relative inline-block text-[#e7dfd6]">
             reason.
           </span>{' '}
-          At Kokorick AI, we turn deep tech research into scalable, production-grade solutions — from agentic AI platforms to full-stack enterprise systems.
+          At Kokorick AI, we turn deep tech research into scalable, production grade solutions, from agentic AI platforms to full stack enterprise systems.
         </motion.p>
 
         <motion.div

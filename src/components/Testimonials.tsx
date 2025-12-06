@@ -43,7 +43,7 @@ export function Testimonials() {
             <div className="mx-auto max-w-7xl px-6 mb-12 md:mb-20">
                 <div className="relative z-10 mx-auto max-w-xl space-y-6 text-center">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium">Trusted by Innovative Leaders</h2>
-                    <p className="text-zinc-400">We partner with forward-thinking companies to build production-grade AI systems that drive real value. Here's what our clients say about working with us.</p>
+                    <p className="text-zinc-400">We partner with forward thinking companies to build production grade AI systems that drive real value. Here's what our clients say about working with us.</p>
                 </div>
             </div>
 

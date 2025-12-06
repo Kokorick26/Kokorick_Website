@@ -43,7 +43,7 @@ export function JoinUsCTA() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-white/70 text-lg sm:text-xl mb-10 max-w-3xl mx-auto"
             >
-              Let's build AI systems that don't just work—they last.
+              Let's build AI systems that don't just work, they last.
             </motion.p>
 
             <motion.div

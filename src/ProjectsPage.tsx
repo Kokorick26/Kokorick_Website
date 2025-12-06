@@ -206,7 +206,7 @@ export default function ProjectsPage({ onProjectClick }: { onProjectClick?: (pro
     <div className="min-h-screen bg-black text-white pt-20">
       <GridSection
         title="Engineering Intelligence"
-        description="Explore our portfolio of production-grade AI systems. From autonomous agents to enterprise RAG platforms, we build solutions that drive real business value."
+        description="Explore our portfolio of production grade AI systems. From autonomous agents to enterprise RAG platforms, we build solutions that drive real business value."
         backgroundLabel="WORK"
         posts={posts}
         onPostClick={onProjectClick}

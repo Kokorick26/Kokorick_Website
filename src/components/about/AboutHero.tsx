@@ -71,7 +71,7 @@ export function AboutHero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          We collaborate with founders and enterprises to engineer, refine, and deliver AI systems that go from prototype to production—ensuring every solution is built for reliability and real impact.
+          We collaborate with founders and enterprises to engineer, refine, and deliver AI systems that go from prototype to production, ensuring every solution is built for reliability and real impact.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -85,6 +85,11 @@ export function AboutHero() {
             className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-medium hover:bg-white/90 transition-colors shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              window.history.pushState({}, "", '/get-started');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           >
             Work with us
           </motion.button>
@@ -92,6 +97,12 @@ export function AboutHero() {
             className="w-full sm:w-auto px-8 py-4 rounded-full bg-transparent border border-white/20 text-white font-medium hover:bg-white/5 transition-colors backdrop-blur-sm"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              const teamSection = document.getElementById('team-section');
+              if (teamSection) {
+                teamSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
           >
             Meet the team
           </motion.button>
@@ -105,9 +116,9 @@ export function AboutHero() {
           className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
         >
           {[
-            { icon: Target, label: "Mission-Driven", desc: "Research to production" },
+            { icon: Target, label: "Mission Driven", desc: "Research to production" },
             { icon: Zap, label: "Fast Execution", desc: "Ship in weeks, not months" },
-            { icon: Sparkles, label: "AI-First", desc: "Deep learning expertise" },
+            { icon: Sparkles, label: "AI First", desc: "Deep learning expertise" },
           ].map((item, i) => (
             <motion.div
               key={i}

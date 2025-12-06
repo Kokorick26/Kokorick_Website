@@ -605,8 +605,8 @@ const BlogEditor = ({ onSuccess, onCancel, editBlog }: BlogEditorProps) => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
                             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id
-                                    ? 'bg-white text-black'
-                                    : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                                ? 'bg-white text-black'
+                                : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
                                 }`}
                         >
                             <tab.icon className="w-4 h-4" />
@@ -769,7 +769,7 @@ const BlogEditor = ({ onSuccess, onCancel, editBlog }: BlogEditorProps) => {
                         <div>
                             <h3 className="text-lg font-medium text-white mb-2">Cover Image</h3>
                             <p className="text-sm text-zinc-400 mb-4">
-                                Upload a high-quality cover image (recommended: 1200x630px)
+                                Upload a high quality cover image (recommended: 1200x630px)
                             </p>
                         </div>
 

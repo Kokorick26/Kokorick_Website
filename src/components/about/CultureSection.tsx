@@ -10,11 +10,11 @@ const values = [
   {
     icon: Code2,
     title: "Precision in code and data",
-    description: "Every line matters. Every metric is measured. Quality is non-negotiable.",
+    description: "Every line matters. Every metric is measured. Quality is non negotiable.",
   },
   {
     icon: Handshake,
-    title: "Long-term partnerships, not one-off projects",
+    title: "Long term partnerships, not one off projects",
     description: "We build relationships that last, creating value that compounds over time.",
   },
 ];
